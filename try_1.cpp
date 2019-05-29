@@ -2,17 +2,22 @@
 using namespace std;
 #define inFile "./example.in"
 // #define outFile "./example.out"
+typedef pair<char, char> tChar;
+#define IntegerValue 100
+#define FloatValue 101
+#define VarVaule 111
 
-#define constValue 100
-#define varVaule 111
 int pos;
-map<string, int> reserveWord, opOrDel;
+map<string, int> reserveWord;
+map<char, int> sOp;
+map<tChar, int> dOp;
 string token, code;
 void init()
 {
     pos = 0;
     reserveWord.clear();
-    opOrDel.clear();
+    sOp.clear();
+    dOp.clear();
 }
 void addConst()
 {
@@ -21,30 +26,31 @@ void addConst()
     reserveWord["if"] = 17;
     reserveWord["while"] = 20;
 
-    opOrDel["+"] = 41;
-    opOrDel["-"] = 42;
-    opOrDel["*"] = 43;
-    opOrDel["/"] = 44;
-    opOrDel["%"] = 45;
-    opOrDel["="] = 46;
-    opOrDel[">"] = 47;
-    opOrDel[">="] = 48;
-    opOrDel["<"] = 49;
-    opOrDel["<="] = 50;
-    opOrDel["=="] = 52;
-    opOrDel["!="] = 53;
-    opOrDel["&&"] = 54;
-    opOrDel["||"] = 55;
-    opOrDel["++"] = 56;
-    opOrDel["--"] = 57;
+    sOp['+'] = 41;
+    sOp['-'] = 42;
+    sOp['*'] = 43;
+    sOp['/'] = 44;
+    sOp['%'] = 45;
+    sOp['='] = 46;
+    sOp['>'] = 47;
+    sOp['<'] = 49;
 
-    opOrDel["("] = 81;
-    opOrDel[")"] = 82;
-    opOrDel[";"] = 84;
-    opOrDel["["] = 88;
-    opOrDel["]"] = 89;
-    opOrDel["{"] = 86;
-    opOrDel["}"] = 87;
+    sOp['('] = 81;
+    sOp[')'] = 82;
+    sOp[';'] = 84;
+    sOp['['] = 88;
+    sOp[']'] = 89;
+    sOp['{'] = 86;
+    sOp['}'] = 87;
+
+    dOp[tChar('>', '=')] = 48;
+    dOp[tChar('<', '=')] = 50;
+    dOp[tChar('=', '=')] = 52;
+    dOp[tChar('!', '=')] = 53;
+    dOp[tChar('&', '&')] = 54;
+    dOp[tChar('|', '|')] = 55;
+    dOp[tChar('+', '+')] = 56;
+    dOp[tChar('-', '-')] = 57;
 }
 string readFileIntoString(string filename)
 {
@@ -90,118 +96,53 @@ int getWord()
         }
         res = reserveWord[token];
         if (res == 0)
-            res = varVaule;
+            res = VarVaule;
     }
     else if (isDigit(ch))
     {
-        while (isDigit(ch))
-        {
+        bool dotFlag=false;
+        while (isDigit(ch)||ch=='.')
+        {   
+            // cout<<"ch == "<<ch<<endl;
+            if(ch=='.'){
+                if(dotFlag){
+                    cout<<"float error";
+                    exit(0);
+                }else{
+                    dotFlag=true;
+                    token+=ch;
+                }
+                ch=code[++pos];
+                continue;
+            }
             token += ch;
             ch = code[++pos];
         }
-        res = constValue;
-    }
-    else if (ch == '*' || ch == '/' || ch == '%' || ch == '(' || ch == ')' || ch == '[' || ch == ']' || ch == '{' || ch == '}' || ch == ';')
-    {
-        token += ch;
-        res = opOrDel[token];
-        pos++;
-    }
-    else if (ch == '+')
-    {
-        token += ch;
-        ch = code[++pos];
-        if (ch == '+')
-        {
-            token += ch;
-            pos++;
-        }
-        res = opOrDel[token];
-    }
-    else if (ch == '-')
-    {
-        token += ch;
-        ch = code[++pos];
-        if (ch == '-')
-        {
-            token += ch;
-            pos++;
-        }
-        res = opOrDel[token];
-    }
-    else if (ch == '=')
-    {
-        token += ch;
-        ch = code[++pos];
-        if (ch == '=')
-        {
-            token += ch;
-            pos++;
-        }
-        res = opOrDel[token];
-    }
-    else if (ch == '>')
-    {
-        token += ch;
-        ch = code[++pos];
-        if (ch == '=')
-        {
-            token += ch;
-            pos++;
-        }
-        res = opOrDel[token];
-    }
-    else if (ch == '<')
-    {
-        token += ch;
-        ch = code[++pos];
-        if (ch == '=')
-        {
-            token += ch;
-            pos++;
-        }
-        res = opOrDel[token];
-    }
-    else if (ch == '!')
-    {
-        token += ch;
-        ch = code[++pos];
-        if (ch == '=')
-        {
-            token += ch;
-            pos++;
-        }
-        res = opOrDel[token];
-    }
-    else if (ch == '&')
-    {
-        token += ch;
-        ch = code[++pos];
-        if (ch == '&')
-        {
-            token += ch;
-            pos++;
-        }
-        res = opOrDel[token];
-    }
-    else if (ch == '|')
-    {
-        token += ch;
-        ch = code[++pos];
-        if (ch == '|')
-        {
-            token += ch;
-            pos++;
-        }
-        res = opOrDel[token];
+        if(dotFlag) res=FloatValue;
+        else res = IntegerValue;
     }
     else
     {
-        cout << "pos = " << pos << endl;
-        cout << "ch = " << ch << endl;
-        cout << "token = " << token;
-        cout << "cant understand" << endl;
-        exit(0);
+        token += ch;
+        pos++;
+        if (pos + 1 < code.size() && dOp[tChar(ch, code[pos])] != 0)
+        {
+            token += code[pos];
+            res = dOp[tChar(ch, code[pos])];
+            pos++;
+        }
+        else
+        {
+            res = sOp[ch];
+            if (res == 0)
+            {
+                cout << "pos = " << pos - 1 << endl;
+                cout << "ch = " << ch << endl;
+                cout << "token = " << token;
+                cout << "cant understand" << endl;
+                exit(0);
+            }
+        }
     }
     return res;
 }
