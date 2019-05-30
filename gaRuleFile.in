@@ -1,0 +1,17 @@
+6
+expr 1
+term rest5
+rest5 3
++ term rest5
+- term rest5
+ε
+term 1
+unary rest6
+rest6 3
+* unary rest6
+/ unary rest6
+ε
+unary 1
+factor
+factor 1
+num

@@ -1,56 +1,54 @@
 #include <bits/stdc++.h>
+#include "la.h"
 using namespace std;
-#define inFile "./example.in"
-// #define outFile "./example.out"
-typedef pair<char, char> tChar;
-#define IntegerValue 100
-#define FloatValue 101
-#define VarVaule 111
 
 int pos;
 map<string, int> reserveWord;
 map<char, int> sOp;
 map<tChar, int> dOp;
 string token, code;
+vector<LAOUT>outRes;
 void init()
 {
     pos = 0;
     reserveWord.clear();
     sOp.clear();
     dOp.clear();
+    outRes.clear();
 }
 void addConst()
 {
-    reserveWord["int"] = 5;
-    reserveWord["else"] = 15;
-    reserveWord["if"] = 17;
-    reserveWord["while"] = 20;
+    reserveWord["int"] = reserveInt;
+    reserveWord["else"] = reserveElse;
+    reserveWord["if"] = reserveIf;
+    reserveWord["while"] = reserveWhile;
 
-    sOp['+'] = 41;
-    sOp['-'] = 42;
-    sOp['*'] = 43;
-    sOp['/'] = 44;
-    sOp['%'] = 45;
-    sOp['='] = 46;
-    sOp['>'] = 47;
-    sOp['<'] = 49;
+    sOp['+'] = charAdd;
+    sOp['-'] = charSub;
+    sOp['*'] = charMul;
+    sOp['/'] = charDev;
+    sOp['%'] = charMod;
+    sOp['='] = charEqu;
+    sOp['>'] = charBig;
+    sOp['<'] = charSma;
+    sOp['!'] = charNot;
 
-    sOp['('] = 81;
-    sOp[')'] = 82;
-    sOp[';'] = 84;
-    sOp['['] = 88;
-    sOp[']'] = 89;
-    sOp['{'] = 86;
-    sOp['}'] = 87;
+    sOp['('] = charLSB;
+    sOp[')'] = charRSB;
+    sOp['['] = charLMB;
+    sOp[']'] = charRMB;
+    sOp['{'] = charLLB;
+    sOp['}'] = charRLB;
+    sOp[';'] = charSem;
 
-    dOp[tChar('>', '=')] = 48;
-    dOp[tChar('<', '=')] = 50;
-    dOp[tChar('=', '=')] = 52;
-    dOp[tChar('!', '=')] = 53;
-    dOp[tChar('&', '&')] = 54;
-    dOp[tChar('|', '|')] = 55;
-    dOp[tChar('+', '+')] = 56;
-    dOp[tChar('-', '-')] = 57;
+    dOp[tChar('>', '=')] = tcharBigEqu;
+    dOp[tChar('<', '=')] = tcharSmaEqu;
+    dOp[tChar('=', '=')] = tcharEquEqu;
+    dOp[tChar('!', '=')] = tcharNotEqu;
+    dOp[tChar('&', '&')] = tcharAndAnd;
+    dOp[tChar('|', '|')] = tcharOrOr;
+    dOp[tChar('+', '+')] = tcharAddAdd;
+    dOp[tChar('-', '-')] = tcharSubSub;
 }
 string readFileIntoString(string filename)
 {
@@ -100,26 +98,32 @@ int getWord()
     }
     else if (isDigit(ch))
     {
-        bool dotFlag=false;
-        while (isDigit(ch)||ch=='.')
-        {   
+        bool dotFlag = false;
+        while (isDigit(ch) || ch == '.')
+        {
             // cout<<"ch == "<<ch<<endl;
-            if(ch=='.'){
-                if(dotFlag){
-                    cout<<"float error";
+            if (ch == '.')
+            {
+                if (dotFlag)
+                {
+                    cout << "float error";
                     exit(0);
-                }else{
-                    dotFlag=true;
-                    token+=ch;
                 }
-                ch=code[++pos];
+                else
+                {
+                    dotFlag = true;
+                    token += ch;
+                }
+                ch = code[++pos];
                 continue;
             }
             token += ch;
             ch = code[++pos];
         }
-        if(dotFlag) res=FloatValue;
-        else res = IntegerValue;
+        if (dotFlag)
+            res = FloatValue;
+        else
+            res = IntegerValue;
     }
     else
     {
@@ -147,25 +151,32 @@ int getWord()
     return res;
 }
 void removeComment() {}
+
 int main()
 {
     init();
     addConst();
 
-    code = readFileIntoString(inFile);
-    cout << "code :" << endl
-         << code << endl;
+    code = readFileIntoString(LAinFile);
+    // cout << "code :" << endl
+    //      << code << endl;
     // removeComment();
 
-    cout << "********begin*********" << endl;
+    // cout << "********begin*********" << endl;
     while (1)
     {
         int res = getWord();
         if (res == 0)
         {
-            cout << "********end***********" << endl;
+            // cout << "********end***********" << endl;
             break;
         }
-        cout << res << "   " << token << endl;
+        outRes.push_back(LAOUT(res,token));
+
+    }
+    int num=outRes.size();
+    cout<<num<<endl;
+    for(int i=0;i<num;++i){
+        cout<<outRes[i].key<<" "<<outRes[i].token<<endl;
     }
 }
