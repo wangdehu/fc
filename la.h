@@ -25,11 +25,12 @@ typedef std::pair<char, char> tChar;
 
 #define charLSB 81
 #define charRSB 82
-#define charSem 84
 #define charLMB 88
 #define charRMB 89
 #define charLLB 86
 #define charRLB 87
+#define charSem 84
+#define charCom 83
 
 #define tcharBigEqu 48
 #define tcharSmaEqu 50

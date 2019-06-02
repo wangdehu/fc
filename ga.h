@@ -3,13 +3,13 @@
 
 #include "la.h"
 
-#define gaRuleFile "gaRuleFile.in"
+#define gaRule "gaRuleFile.in"
+#define Begin "stmts"
 
 struct G{
     std::string left;
     std::vector<std::string>right;
     G(std::string l):left(l){right.clear();}
 };
-#define Begin  "expr"
 
 #endif

@@ -7,7 +7,7 @@ map<string, int> reserveWord;
 map<char, int> sOp;
 map<tChar, int> dOp;
 string token, code;
-vector<LAOUT>outRes;
+vector<LAOUT> outRes;
 void init()
 {
     pos = 0;
@@ -40,6 +40,7 @@ void addConst()
     sOp['{'] = charLLB;
     sOp['}'] = charRLB;
     sOp[';'] = charSem;
+    sOp[','] = charCom;
 
     dOp[tChar('>', '=')] = tcharBigEqu;
     dOp[tChar('<', '=')] = tcharSmaEqu;
@@ -171,12 +172,12 @@ int main()
             // cout << "********end***********" << endl;
             break;
         }
-        outRes.push_back(LAOUT(res,token));
-
+        outRes.push_back(LAOUT(res, token));
     }
-    int num=outRes.size();
-    cout<<num<<endl;
-    for(int i=0;i<num;++i){
-        cout<<outRes[i].key<<" "<<outRes[i].token<<endl;
+    int num = outRes.size();
+    cout << num << endl;
+    for (int i = 0; i < num; ++i)
+    {
+        cout << outRes[i].key << " " << outRes[i].token << endl;
     }
 }
