@@ -1,7 +1,6 @@
 #ifndef LA_H
 #define LA_H
 #include<bits/stdc++.h>
-#define LAinFile "./ex01.in"
 // #define outFile "./example.out"
 typedef std::pair<char, char> tChar;
 #define IntegerValue 100

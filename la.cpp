@@ -153,12 +153,12 @@ int getWord()
 }
 void removeComment() {}
 
-int main()
+int main(int argc,char *argv[])
 {
     init();
     addConst();
 
-    code = readFileIntoString(LAinFile);
+    code = readFileIntoString(argv[1]);
     // cout << "code :" << endl
     //      << code << endl;
     // removeComment();

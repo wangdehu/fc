@@ -3,8 +3,6 @@
 
 #include "la.h"
 
-#define gaRule "gaRuleFile.in"
-#define Begin "stmts"
 
 struct G{
     std::string left;

@@ -14,13 +14,15 @@ map<string, int> keyValue;
 vector<string> outL;
 vector<string> outR;
 string empteyString = "ε";
-void init_fir()
+string Begin;
+
+void init_fir(string gaRule)
 {
     id.clear();
     fstream in(gaRule, ios::in);
     string s, p;
     int num;
-
+    in >> Begin;
     in >> ruleNum;
     for (int i = 0; i < ruleNum; ++i)
     {
@@ -125,7 +127,23 @@ void game(string b)
     {
         if (b != "ε")
         {
+            int s = keyValue[b];
+            // cout<<b<<endl;
+            // cout<<"pos   "<<laout[pos].key<<"   "<<laout[pos].token<<endl;
+            if (s != laout[pos].key)
+            {   
+                cout<<"************";
+                cout<<b<<endl;
+                cout << "error" << endl;
+                cout<<"************";
+                exit(0);
+            }
             pos++;
+            if (pos > laout.size())
+            {
+                cout << "error" << endl;
+                exit(0);
+            }
         }
         return;
     }
@@ -176,7 +194,7 @@ void game(string b)
         addOut(b, empteyString);
         game(q[0]);
     }
-    else
+    else if (fg != -1)
     {
         vector<string> q = splitToVector(gs[k].right[fg]);
         addOut(b, gs[k].right[fg]);
@@ -188,9 +206,9 @@ void game(string b)
     }
 }
 
-int main()
+int main(int argc, char *argv[])
 {
-    init_fir();
+    init_fir(argv[1]);
     init_sec();
     init_tri();
 
@@ -203,10 +221,10 @@ int main()
     string origin = Begin;
     for (int i = 0; i < outL.size(); ++i)
     {
-        if (outR[i] == empteyString)
-        {
-            outR[i] = "";
-        }
+        // if (outR[i] == empteyString)
+        // {
+        //     outR[i] = "";
+        // }
         int p = origin.find(outL[i]);
         origin.replace(p, outL[i].size(), outR[i]);
         cout << origin << endl;
