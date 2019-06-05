@@ -40,6 +40,36 @@ typedef std::pair<char, char> tChar;
 #define tcharAddAdd 56
 #define tcharSubSub 57
 
+
+
+#define Add "+"
+#define Sub "-"
+#define Mul "*"
+#define Dev "/"
+#define Mod "%"
+#define Equ "="
+#define Big ">"
+#define Sma "<"
+#define Not "!"
+
+#define LSB "("
+#define RSB ")"
+#define LMB "["
+#define RMB "]"
+#define LLB "{"
+#define RLB "}"
+#define Sem ";"
+#define Com ","
+
+#define BigEqu ">="
+#define SmaEqu "<="
+#define EquEqu "=="
+#define NotEqu "!="
+#define AndAnd "&&"
+#define OrOr   "||"
+#define AddAdd "++"
+#define SubSub "--"
+
 struct LAOUT{
     int key;
     std::string token;
