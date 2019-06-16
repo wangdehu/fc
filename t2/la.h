@@ -1,7 +1,7 @@
 #ifndef LA_H
 #define LA_H
 #include<bits/stdc++.h>
-// #define outFile "./example.out"
+
 typedef std::pair<char, char> tChar;
 #define IntegerValue 100
 #define FloatValue 101

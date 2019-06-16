@@ -1,67 +1,17 @@
 #include <bits/stdc++.h>
 #include "ga.h"
+#define Begin STMTS
 using namespace std;
 vector<LAOUT> laout;
 vector<string> outL, outR;
 int pos;
-const static string empteyString = "ε";
 int idd;
 int tmpId;
 
-struct Attr
-{
-    int val;
-    string place;
-    Attr()
-    {
-        val = 0;
-        place.clear();
-    }
-    Attr(int v, string s) : val(v), place(s) {}
-};
-
-void init();
-void addOut(string b, string s);
-void Error(string name, int h, int type);
-bool check(int key);
-void checkAndErr(int k, string n, int h, int type);
-void emit(string s);
-void STMTS();
-void STMT();
-void REST0();
-Attr LOC();
-Attr RESTA(Attr inArrays);
-void ELIST();
-void REST1();
-void REST4();
-Attr REST5(Attr in);
-Attr REST6(Attr in);
-void REL();
-void BOOL();
-void EQUALITY();
-void ROP_EXPR();
-Attr EXPR();
-Attr TERM();
-Attr UNARY();
-Attr FACTOR();
-
-string newtemp();
 int main()
 {
     init();
-    STMTS();
-    // EXPR();
-    // STMT();
-    // cout << endl;
-    // cout << "stmts"
-    //      << "\t=> " << endl;
-    // string origin = "stmts ";
-    // for (int i = 0; i < outL.size(); ++i)
-    // {
-    //     int p = origin.find(outL[i]);
-    //     origin.replace(p, outL[i].size(), outR[i]);
-    //     cout << origin << endl;
-    // }
+    Begin();
 }
 string newtemp()
 {
@@ -87,7 +37,9 @@ void init()
 }
 void addOut(string b, string s)
 {
-    // cout << b << " -> " << s << endl;
+#ifdef process
+    cout << b << " -> " << s << endl;
+#endif
     outL.push_back(b);
     if (s == empteyString)
         s = "";
@@ -164,6 +116,7 @@ void STMT()
         checkAndErr(charEqu, name, height, 5);
         Attr expr = EXPR();
         emit(loc.place + "=" + expr.place);
+        cout<<loc.place<<" = "<<expr.val;
         checkAndErr(charSem, name, height, 6);
     }
 }
@@ -329,7 +282,7 @@ Attr EXPR()
 
     //
 
-    cout << "expr.val = " << expr.val << endl;
+    // cout << "expr.val = " << expr.val << endl;
     //
     return expr;
 }

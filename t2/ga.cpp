@@ -4,47 +4,11 @@ using namespace std;
 vector<LAOUT> laout;
 vector<string> outL, outR;
 int pos;
-const static string empteyString = "ε";
 int idd;
-
-void init();
-void addOut(string b, string s);
-void Error(string name, int h, int type);
-bool check(int key);
-void checkAndErr(int k, string n, int h, int type);
-void STMTS();
-void STMT();
-void REST0();
-void LOC();
-void RESTA();
-void ELIST();
-void REST1();
-void REST4();
-void REST5();
-void REST6();
-void REL();
-void BOOL();
-void EQUALITY();
-void ROP_EXPR();
-void EXPR();
-void TERM();
-void UNARY();
-void FACTOR();
-
 int main()
 {
     init();
     STMTS();
-    cout << endl;
-    cout << "stmts"
-         << "\t=> " << endl;
-    string origin = "stmts ";
-    for (int i = 0; i < outL.size(); ++i)
-    {
-        int p = origin.find(outL[i]);
-        origin.replace(p, outL[i].size(), outR[i]);
-        cout << origin << endl;
-    }
 }
 
 void init()
